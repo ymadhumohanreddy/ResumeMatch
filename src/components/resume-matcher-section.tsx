@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useMemo} from 'react';
+import {useMemo, useState} from 'react';
 import type {AnalyzeResumeOutput} from '@/ai/flows/resume-analysis';
 import {analyzeResume} from '@/ai/flows/resume-analysis';
 import {
@@ -17,9 +17,8 @@ import {
   UploadCloud,
 } from 'lucide-react';
 import mammoth from 'mammoth';
-import pdfParse from 'pdf-parse';
+import * as pdfjs from 'pdfjs-dist';
 
-import {useToast} from '@/hooks/use-toast';
 import {Badge} from '@/components/ui/badge';
 import {Button} from '@/components/ui/button';
 import {
@@ -32,6 +31,9 @@ import {
 import {Label} from '@/components/ui/label';
 import {Progress} from '@/components/ui/progress';
 import {Textarea} from '@/components/ui/textarea';
+import {useToast} from '@/hooks/use-toast';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = [
@@ -82,8 +84,19 @@ export function ResumeMatcherSection() {
       const arrayBuffer = await file.arrayBuffer();
       let text = '';
       if (file.type === 'application/pdf') {
-        const data = await pdfParse(Buffer.from(arrayBuffer));
-        text = data.text;
+        const pdf = await pdfjs.getDocument(new Uint8Array(arrayBuffer))
+          .promise;
+        const numPages = pdf.numPages;
+        const pageTexts = [];
+        for (let i = 1; i <= numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items
+            .map((item: any) => item.str)
+            .join(' ');
+          pageTexts.push(pageText);
+        }
+        text = pageTexts.join('\n');
       } else {
         const result = await mammoth.extractRawText({arrayBuffer});
         text = result.value;
@@ -236,10 +249,7 @@ export function ResumeMatcherSection() {
               <Button variant="outline" onClick={() => setStep(1)}>
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
               </Button>
-              <Button
-                onClick={handleAnalyze}
-                disabled={!jobDescription.trim()}
-              >
+              <Button onClick={handleAnalyze} disabled={!jobDescription.trim()}>
                 Analyze Now
               </Button>
             </div>
