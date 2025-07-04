@@ -15,14 +15,17 @@ let auth: Auth | null = null;
 let googleProvider: GoogleAuthProvider | null = null;
 let isFirebaseEnabled = false;
 
+const isPlaceholder = (value: string | undefined) =>
+  !value || value.includes('YOUR_');
+
 // All of these keys are required for Firebase Auth to work.
 if (
-  firebaseConfig.apiKey &&
-  firebaseConfig.authDomain &&
-  firebaseConfig.projectId &&
-  firebaseConfig.storageBucket &&
-  firebaseConfig.messagingSenderId &&
-  firebaseConfig.appId
+  !isPlaceholder(firebaseConfig.apiKey) &&
+  !isPlaceholder(firebaseConfig.authDomain) &&
+  !isPlaceholder(firebaseConfig.projectId) &&
+  !isPlaceholder(firebaseConfig.storageBucket) &&
+  !isPlaceholder(firebaseConfig.messagingSenderId) &&
+  !isPlaceholder(firebaseConfig.appId)
 ) {
   isFirebaseEnabled = true;
   app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
@@ -30,7 +33,7 @@ if (
   googleProvider = new GoogleAuthProvider();
 } else {
   console.warn(
-    'Firebase is not configured. Authentication will be disabled. Please add all necessary Firebase credentials to your .env file.'
+    'Firebase is not configured. Authentication will be disabled. Please add all necessary Firebase credentials to your .env file and replace placeholder values.'
   );
 }
 
