@@ -33,7 +33,7 @@ import {Progress} from '@/components/ui/progress';
 import {Textarea} from '@/components/ui/textarea';
 import {useToast} from '@/hooks/use-toast';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_FILE_TYPES = [
@@ -92,7 +92,7 @@ export function ResumeMatcherSection() {
           const page = await pdf.getPage(i);
           const textContent = await page.getTextContent();
           const pageText = textContent.items
-            .map((item: any) => item.str)
+            .map(item => ('str' in item ? item.str : ''))
             .join(' ');
           pageTexts.push(pageText);
         }
