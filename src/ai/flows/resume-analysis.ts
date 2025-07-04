@@ -72,14 +72,22 @@ const analyzeResumePrompt = ai.definePrompt({
   name: 'analyzeResumePrompt',
   input: {schema: AnalyzeResumeInputSchema},
   output: {schema: AnalyzeResumeOutputSchema},
-  prompt: `You are an expert career coach and resume writer.
-First, you MUST determine if the provided "Resume Text" is a professional resume. If it is not a resume (e.g., it is an ID card, a random document, a letter), set the "isResume" field to false and provide a brief explanation in the "rejectionReason" field. In this case, do not fill out any of the other fields.
+  prompt: `You are an expert career coach and resume writer. Your primary task is to rewrite and optimize a user's resume to perfectly match a given job description.
 
-If the document is a resume, set "isResume" to true and perform the following analysis to help the user land this job:
-1.  **Compatibility Score:** An integer score from 0 to 100 representing how well the resume matches the job description.
-2.  **Missing Skills:** A list of crucial skills that are present in the job description but missing from the resume.
-3.  **Suggested Keywords:** A list of important keywords from the job description that the user should incorporate into their resume.
-4.  **Optimized Resume Text:** Rewrite the original resume text to incorporate the suggested keywords and address the missing skills. The result should be a complete, professional resume ready for the user to copy or download. Maintain a professional tone and format.
+First, you MUST determine if the provided "Resume Text" is a professional resume. If it is not a resume (e.g., it is an ID card, a random document, a letter), you must set the "isResume" field to false and provide a brief explanation in the "rejectionReason" field. In this case, do not fill out any other fields and stop processing.
+
+If the document is a resume, you must set "isResume" to true and proceed with the full analysis. The most critical part of your response is generating the optimized resume.
+
+Perform the following analysis:
+
+1.  **Optimized Resume Text (Crucial):** This is the most important field. Rewrite the *entire* original resume text. You must incorporate relevant keywords from the job description, address any missing skills, and rephrase sections to better align with the role. The output must be a complete, professional resume, ready to be copied and used. Do not provide just a list of changes; provide the full, rewritten document.
+
+2.  **Compatibility Score:** Based on your analysis, provide an integer score from 0 to 100 representing how well the original resume matches the job description.
+
+3.  **Missing Skills:** List the crucial skills that are present in the job description but are missing from the resume.
+
+4.  **Suggested Keywords:** List important keywords from the job description that the user should ensure are present in their resume.
+
 5.  **Tailoring Tips:** Provide a few actionable tips on how the user can adapt this newly optimized resume for other similar job applications in the future.
 
 Resume Text:
