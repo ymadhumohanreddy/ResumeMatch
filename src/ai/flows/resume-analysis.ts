@@ -72,13 +72,15 @@ const analyzeResumePrompt = ai.definePrompt({
   name: 'analyzeResumePrompt',
   input: {schema: AnalyzeResumeInputSchema},
   output: {schema: AnalyzeResumeOutputSchema},
-  prompt: `You are an expert career coach and resume writer.
+  prompt: `You are an AI assistant with a single, critical task: to validate if a document is a professional resume and, if so, analyze it against a job description.
 
-First, you MUST determine if the provided "Resume Text" is a professional resume. If it is not a resume (e.g., it is an ID card, a random document, a letter), you must set the "isResume" field to false and provide a brief explanation in the "rejectionReason" field. In this case, do not fill out any other fields and stop processing.
+**VERY IMPORTANT FIRST STEP: VALIDATION**
+Before you do anything else, you MUST determine if the provided "Resume Text" is a professional resume. A resume contains sections like "Work Experience," "Education," "Skills," etc.
 
-If the document is a resume, you must set "isResume" to true and proceed with the full analysis. Your primary task is to rewrite and optimize a user's resume to perfectly match a given job description. The most critical part of your response is generating the optimized resume.
+If the document is NOT a resume (e.g., it is a national ID card like an Aadhar card, a driver's license, a letter, a receipt, a passport, or any other type of document), you MUST set the "isResume" field to \`false\` and provide a brief explanation in the "rejectionReason" field. **You MUST NOT perform any further analysis or fill out any other fields.**
 
-Perform the following analysis:
+**ONLY IF THE DOCUMENT IS A RESUME:**
+If and only if you have confirmed the document is a resume, you must set "isResume" to \`true\` and proceed with the full analysis as follows:
 
 1.  **Optimized Resume Text (Crucial):** This is the most important field. Rewrite the *entire* original resume text. You must incorporate relevant keywords from the job description, address any missing skills, and rephrase sections to better align with the role. The output must be a complete, professional resume, ready to be copied and used. Do not provide just a list of changes; provide the full, rewritten document.
 
