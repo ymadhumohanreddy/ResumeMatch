@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Rocket } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 export function LandingHeader() {
   const navLinks = [
@@ -28,6 +29,7 @@ export function LandingHeader() {
           ))}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
+          <ThemeToggle />
           <Button asChild>
             <a href="#try-it">Try Resume Matcher</a>
           </Button>
