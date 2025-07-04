@@ -1,0 +1,71 @@
+import {
+  Github,
+  Linkedin,
+  MessageCircle,
+  Twitter,
+  Book,
+} from 'lucide-react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Rocket } from 'lucide-react';
+
+export function LandingFooter() {
+  const socialLinks = [
+    { name: 'GitHub', icon: Github, href: '#' },
+    { name: 'LinkedIn', icon: Linkedin, href: '#' },
+    { name: 'Discord', icon: MessageCircle, href: '#' },
+    { name: 'Blog', icon: Book, href: '#' },
+    { name: 'Twitter', icon: Twitter, href: '#' },
+  ];
+  return (
+    <footer className="border-t bg-card py-12">
+      <div className="container">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="flex flex-col items-start">
+            <div className="flex items-center">
+              <Rocket className="mr-2 h-6 w-6" />
+              <h3 className="text-lg font-semibold">Resume Matcher</h3>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Open-source tool to help you land your dream job.
+            </p>
+          </div>
+          <div className="md:mx-auto">
+            <h3 className="text-lg font-semibold">Community</h3>
+            <div className="mt-2 flex space-x-4">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground"
+                  aria-label={link.name}
+                >
+                  <link.icon className="h-6 w-6" />
+                  <span className="sr-only">{link.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="md:ml-auto">
+            <h3 className="text-lg font-semibold">Newsletter (Coming Soon)</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Get updates on new features and resume tips.
+            </p>
+            <form className="mt-4 flex gap-2">
+              <Input type="email" placeholder="Enter your email" disabled />
+              <Button type="submit" disabled>
+                Subscribe
+              </Button>
+            </form>
+          </div>
+        </div>
+        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
+          <p>
+            &copy; {new Date().getFullYear()} Resume Matcher. An open-source
+            project. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
