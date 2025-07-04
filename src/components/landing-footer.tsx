@@ -1,15 +1,24 @@
+'use client';
+
 import {
+  Book,
   Github,
   Linkedin,
   MessageCircle,
+  Rocket,
   Twitter,
-  Book,
 } from 'lucide-react';
-import { Input } from './ui/input';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
-import { Rocket } from 'lucide-react';
+import { Input } from './ui/input';
 
 export function LandingFooter() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   const socialLinks = [
     { name: 'GitHub', icon: Github, href: '#' },
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
@@ -61,8 +70,8 @@ export function LandingFooter() {
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
           <p>
-            &copy; {new Date().getFullYear()} Resume Matcher. An open-source
-            project. All rights reserved.
+            &copy; {year} Resume Matcher. An open-source project. All rights
+            reserved.
           </p>
         </div>
       </div>
