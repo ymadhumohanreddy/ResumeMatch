@@ -16,7 +16,11 @@ export function HeroSection() {
           <a href="#try-it">Try Resume Matcher</a>
         </Button>
         <Button size="lg" variant="outline" asChild>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/Nithinreddy3093"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Star on GitHub
           </a>
         </Button>

@@ -14,7 +14,7 @@ export function CommunitySection() {
         <div className="mt-8 flex justify-center gap-4">
           <Button size="lg" asChild>
             <a
-              href="https://discord.com"
+              href="https://discord.com/channels/@me"
               target="_blank"
               rel="noopener noreferrer"
             >

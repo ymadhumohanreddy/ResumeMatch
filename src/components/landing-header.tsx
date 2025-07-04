@@ -7,9 +7,9 @@ export function LandingHeader() {
   const navLinks = [
     {
       name: 'Star on GitHub',
-      href: 'https://github.com',
+      href: 'https://github.com/Nithinreddy3093',
     },
-    { name: 'Join Discord', href: 'https://discord.com' },
+    { name: 'Join Discord', href: 'https://discord.com/channels/@me' },
     { name: 'Blogs', href: '#' },
   ];
 

@@ -21,10 +21,22 @@ export function LandingFooter() {
   }, []);
 
   const socialLinks = [
-    { name: 'GitHub', icon: Github, href: 'https://github.com' },
-    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com' },
-    { name: 'Discord', icon: MessageCircle, href: 'https://discord.com' },
-    { name: 'Product Hunt', icon: ProductHuntIcon, href: 'https://producthunt.com' },
+    { name: 'GitHub', icon: Github, href: 'https://github.com/Nithinreddy3093' },
+    {
+      name: 'LinkedIn',
+      icon: Linkedin,
+      href: 'https://www.linkedin.com/in/nithin-marthala/',
+    },
+    {
+      name: 'Discord',
+      icon: MessageCircle,
+      href: 'https://discord.com/channels/@me',
+    },
+    {
+      name: 'Product Hunt',
+      icon: ProductHuntIcon,
+      href: 'https://producthunt.com',
+    },
     { name: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
     { name: 'Bluesky', icon: BlueSkyIcon, href: 'https://bsky.app' },
     { name: 'Blog', icon: Book, href: '#' },
@@ -66,7 +78,12 @@ export function LandingFooter() {
               Get updates on new features and resume tips.
             </p>
             <form className="mt-4 flex gap-2">
-              <Input type="email" placeholder="Enter your email" disabled />
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                disabled
+                suppressHydrationWarning
+              />
               <Button type="submit" disabled>
                 Subscribe
               </Button>
