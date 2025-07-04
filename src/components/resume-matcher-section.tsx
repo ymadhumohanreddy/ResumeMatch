@@ -264,23 +264,55 @@ export function ResumeMatcherSection() {
       case 3:
         if (error) {
           return (
-            <Card className="border-destructive">
-              <CardHeader>
-                <CardTitle className="flex items-center text-destructive">
-                  <AlertTriangle className="mr-2 h-5 w-5" />
-                  Analysis Error
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>{error}</p>
-                <Button onClick={resetForm} className="mt-4">
-                  Start Over
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="p-8">
+              <Card className="border-destructive">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-destructive">
+                    <AlertTriangle className="mr-2 h-5 w-5" />
+                    Analysis Error
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>{error}</p>
+                  <Button onClick={resetForm} className="mt-4">
+                    Start Over
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           );
         }
         if (!analysisResult) return null;
+
+        if (!analysisResult.isResume) {
+          return (
+            <div className="p-8">
+              <Card className="border-destructive">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-destructive">
+                    <AlertTriangle className="mr-2 h-5 w-5" />
+                    Document Analysis Failed
+                  </CardTitle>
+                  <CardDescription>
+                    The uploaded document does not appear to be a resume.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {analysisResult.rejectionReason && (
+                    <p className="mb-4 text-muted-foreground">
+                      <strong>Reason:</strong> {analysisResult.rejectionReason}
+                    </p>
+                  )}
+                  <Button onClick={resetForm}>
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Try Again with a
+                    Different File
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          );
+        }
+
         return (
           <div className="space-y-8 p-4 sm:p-8">
             <Tabs defaultValue="overview" className="w-full">
@@ -312,11 +344,11 @@ export function ResumeMatcherSection() {
                       <div className="mt-2 flex items-center gap-4">
                         <Progress
                           id="compatibility-score"
-                          value={analysisResult.compatibilityScore}
+                          value={analysisResult.compatibilityScore ?? 0}
                           className="h-4"
                         />
                         <span className="text-2xl font-bold text-primary">
-                          {analysisResult.compatibilityScore}%
+                          {analysisResult.compatibilityScore ?? 0}%
                         </span>
                       </div>
                     </div>
@@ -329,7 +361,8 @@ export function ResumeMatcherSection() {
                         Consider adding these keywords from the job description.
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {analysisResult.suggestedKeywords.length > 0 ? (
+                        {analysisResult.suggestedKeywords &&
+                        analysisResult.suggestedKeywords.length > 0 ? (
                           analysisResult.suggestedKeywords.map(
                             (keyword, index) => (
                               <Badge key={index} variant="outline">
@@ -354,7 +387,8 @@ export function ResumeMatcherSection() {
                         missing.
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {analysisResult.missingSkills.length > 0 ? (
+                        {analysisResult.missingSkills &&
+                        analysisResult.missingSkills.length > 0 ? (
                           analysisResult.missingSkills.map((skill, index) => (
                             <Badge key={index} variant="destructive">
                               {skill}
@@ -386,9 +420,13 @@ export function ResumeMatcherSection() {
                     <Textarea
                       readOnly
                       className="min-h-[300px] bg-muted/50 text-sm"
-                      value={analysisResult.optimizedResumeText}
+                      value={analysisResult.optimizedResumeText ?? ''}
                     />
-                    <Button onClick={downloadOptimizedResume} className="mt-4">
+                    <Button
+                      onClick={downloadOptimizedResume}
+                      className="mt-4"
+                      disabled={!analysisResult.optimizedResumeText}
+                    >
                       <Download className="mr-2 h-4 w-4" /> Download Optimized
                       Resume
                     </Button>
