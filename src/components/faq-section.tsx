@@ -50,7 +50,7 @@ export function FaqSection() {
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="text-base text-muted-foreground">
-                {faq.answer}
+                <p className="leading-relaxed">{faq.answer}</p>
               </AccordionContent>
             </AccordionItem>
           ))}
