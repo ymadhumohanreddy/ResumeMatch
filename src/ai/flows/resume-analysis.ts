@@ -72,11 +72,11 @@ const analyzeResumePrompt = ai.definePrompt({
   name: 'analyzeResumePrompt',
   input: {schema: AnalyzeResumeInputSchema},
   output: {schema: AnalyzeResumeOutputSchema},
-  prompt: `You are an expert career coach and resume writer. Your primary task is to rewrite and optimize a user's resume to perfectly match a given job description.
+  prompt: `You are an expert career coach and resume writer.
 
 First, you MUST determine if the provided "Resume Text" is a professional resume. If it is not a resume (e.g., it is an ID card, a random document, a letter), you must set the "isResume" field to false and provide a brief explanation in the "rejectionReason" field. In this case, do not fill out any other fields and stop processing.
 
-If the document is a resume, you must set "isResume" to true and proceed with the full analysis. The most critical part of your response is generating the optimized resume.
+If the document is a resume, you must set "isResume" to true and proceed with the full analysis. Your primary task is to rewrite and optimize a user's resume to perfectly match a given job description. The most critical part of your response is generating the optimized resume.
 
 Perform the following analysis:
 
