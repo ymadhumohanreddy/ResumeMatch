@@ -1,9 +1,22 @@
-import { Button } from '@/components/ui/button';
+'use client';
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Rocket } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
+import { Loader2, LogOut, Menu, Rocket } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Button } from './ui/button';
 import { ThemeToggle } from './theme-toggle';
 
 export function LandingHeader() {
+  const { user, login, logout, loading, isFirebaseEnabled } = useAuth();
+
   const navLinks = [
     {
       name: 'Star on GitHub',
@@ -12,6 +25,63 @@ export function LandingHeader() {
     { name: 'Join Discord', href: 'https://discord.com/channels/@me' },
     { name: 'Blogs', href: '#' },
   ];
+
+  const renderAuthButton = () => {
+    if (!isFirebaseEnabled) {
+      return (
+        <Button disabled title="Firebase is not configured">
+          Login Disabled
+        </Button>
+      );
+    }
+
+    if (loading) {
+      return (
+        <Button variant="outline" size="icon" disabled>
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </Button>
+      );
+    }
+
+    if (user) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={user.photoURL ?? ''}
+                  alt={user.displayName ?? 'User'}
+                />
+                <AvatarFallback>
+                  {user.displayName?.charAt(0) ?? 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuItem disabled>
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {user.displayName}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+
+    return <Button onClick={login}>Login with Google</Button>;
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -35,9 +105,7 @@ export function LandingHeader() {
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <ThemeToggle />
-          <Button asChild>
-            <a href="#try-it">Try Resume Matcher</a>
-          </Button>
+          <div className="hidden md:block">{renderAuthButton()}</div>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -64,6 +132,34 @@ export function LandingHeader() {
                     </a>
                   ))}
                 </nav>
+                <div className="mt-6 border-t pt-6">
+                  {!isFirebaseEnabled ? (
+                    <Button
+                      disabled
+                      className="w-full"
+                      title="Firebase is not configured"
+                    >
+                      Login Disabled
+                    </Button>
+                  ) : loading ? (
+                    <Button disabled className="w-full">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </Button>
+                  ) : user ? (
+                    <Button
+                      onClick={logout}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Logout
+                    </Button>
+                  ) : (
+                    <Button onClick={login} className="w-full">
+                      Login with Google
+                    </Button>
+                  )}
+                </div>
               </div>
             </SheetContent>
           </Sheet>

@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import { AnimatedIntro } from '@/components/animated-intro';
 import {ThemeProvider} from '@/components/theme-provider';
+import {AuthProvider} from '@/hooks/use-auth';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -28,15 +29,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <AnimatedIntro />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <AnimatedIntro />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
