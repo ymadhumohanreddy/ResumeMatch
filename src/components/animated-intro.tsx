@@ -3,32 +3,24 @@
 import { Rocket } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const INTRO_KEY = 'intro-played';
-
 export function AnimatedIntro() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    // This effect runs only on the client
-    const hasPlayed = localStorage.getItem(INTRO_KEY);
+    // This effect runs only on the client, after initial hydration.
+    const fadeTimer = setTimeout(() => {
+      setIsFadingOut(true);
+    }, 2500); // Start fading out after 2.5 seconds
 
-    if (!hasPlayed) {
-      setIsVisible(true); // Show intro if it has not been played
-      const fadeTimer = setTimeout(() => {
-        setIsFadingOut(true);
-      }, 2500); // Start fading out after 2.5 seconds
+    const hideTimer = setTimeout(() => {
+      setIsVisible(false);
+    }, 3000); // Completely hide after 3 seconds (2500ms + 500ms fade)
 
-      const hideTimer = setTimeout(() => {
-        setIsVisible(false);
-        localStorage.setItem(INTRO_KEY, 'true');
-      }, 3000); // Completely hide after 3 seconds (2500ms + 500ms fade)
-
-      return () => {
-        clearTimeout(fadeTimer);
-        clearTimeout(hideTimer);
-      };
-    }
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   if (!isVisible) {
