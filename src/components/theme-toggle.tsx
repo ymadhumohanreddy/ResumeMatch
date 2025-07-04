@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -13,7 +14,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export function ThemeToggle() {
+  const [mounted, setMounted] = React.useState(false);
   const {setTheme} = useTheme();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // A button placeholder can prevent layout shift
+    return <Button variant="ghost" size="icon" disabled />;
+  }
 
   return (
     <DropdownMenu>
