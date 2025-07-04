@@ -9,6 +9,7 @@ import {
   Twitter,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { BlueSkyIcon, ProductHuntIcon } from './icons';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 
@@ -20,11 +21,13 @@ export function LandingFooter() {
   }, []);
 
   const socialLinks = [
-    { name: 'GitHub', icon: Github, href: '#' },
-    { name: 'LinkedIn', icon: Linkedin, href: '#' },
-    { name: 'Discord', icon: MessageCircle, href: '#' },
+    { name: 'GitHub', icon: Github, href: 'https://github.com' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com' },
+    { name: 'Discord', icon: MessageCircle, href: 'https://discord.com' },
+    { name: 'Product Hunt', icon: ProductHuntIcon, href: 'https://producthunt.com' },
+    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com' },
+    { name: 'Bluesky', icon: BlueSkyIcon, href: 'https://bsky.app' },
     { name: 'Blog', icon: Book, href: '#' },
-    { name: 'Twitter', icon: Twitter, href: '#' },
   ];
   return (
     <footer className="border-t bg-card py-12">
@@ -48,6 +51,8 @@ export function LandingFooter() {
                   href={link.href}
                   className="text-muted-foreground hover:text-foreground"
                   aria-label={link.name}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <link.icon className="h-6 w-6" />
                   <span className="sr-only">{link.name}</span>

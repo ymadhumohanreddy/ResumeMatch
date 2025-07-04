@@ -13,7 +13,13 @@ export function CommunitySection() {
         </p>
         <div className="mt-8 flex justify-center gap-4">
           <Button size="lg" asChild>
-            <a href="#">Join Discord</a>
+            <a
+              href="https://discord.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Join Discord
+            </a>
           </Button>
           <Button size="lg" variant="outline" asChild>
             <a href="#">Read Our Blog</a>

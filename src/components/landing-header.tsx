@@ -5,8 +5,11 @@ import { ThemeToggle } from './theme-toggle';
 
 export function LandingHeader() {
   const navLinks = [
-    { name: 'Star on GitHub', href: '#' },
-    { name: 'Join Discord', href: '#' },
+    {
+      name: 'Star on GitHub',
+      href: 'https://github.com',
+    },
+    { name: 'Join Discord', href: 'https://discord.com' },
     { name: 'Blogs', href: '#' },
   ];
 
@@ -23,6 +26,8 @@ export function LandingHeader() {
               key={link.name}
               href={link.href}
               className="text-foreground/60 transition-colors hover:text-foreground/80"
+              target={link.href.startsWith('http') ? '_blank' : '_self'}
+              rel="noopener noreferrer"
             >
               {link.name}
             </a>
@@ -52,6 +57,8 @@ export function LandingHeader() {
                       key={link.name}
                       href={link.href}
                       className="text-foreground transition-colors hover:text-foreground/80"
+                      target={link.href.startsWith('http') ? '_blank' : '_self'}
+                      rel="noopener noreferrer"
                     >
                       {link.name}
                     </a>
