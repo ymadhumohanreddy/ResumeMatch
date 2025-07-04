@@ -30,6 +30,12 @@ import {
 } from '@/components/ui/card';
 import {Label} from '@/components/ui/label';
 import {Progress} from '@/components/ui/progress';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs';
 import {Textarea} from '@/components/ui/textarea';
 import {useToast} from '@/hooks/use-toast';
 
@@ -277,125 +283,140 @@ export function ResumeMatcherSection() {
         if (!analysisResult) return null;
         return (
           <div className="space-y-8 p-4 sm:p-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Sparkles className="mr-2 h-5 w-5 text-primary" />
-                  Your Instant Insights
-                </CardTitle>
-                <CardDescription>
-                  Here’s how your resume stacks up against the job description.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <Label
-                    htmlFor="compatibility-score"
-                    className="text-lg font-medium"
-                  >
-                    Compatibility Score
-                  </Label>
-                  <div className="mt-2 flex items-center gap-4">
-                    <Progress
-                      id="compatibility-score"
-                      value={analysisResult.compatibilityScore}
-                      className="h-4"
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="optimized">Optimized Resume</TabsTrigger>
+                <TabsTrigger value="tips">Tailoring Tips</TabsTrigger>
+              </TabsList>
+              <TabsContent value="overview" className="mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Sparkles className="mr-2 h-5 w-5 text-primary" />
+                      Your Instant Insights
+                    </CardTitle>
+                    <CardDescription>
+                      Here’s how your resume stacks up against the job
+                      description.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div>
+                      <Label
+                        htmlFor="compatibility-score"
+                        className="text-lg font-medium"
+                      >
+                        Compatibility Score
+                      </Label>
+                      <div className="mt-2 flex items-center gap-4">
+                        <Progress
+                          id="compatibility-score"
+                          value={analysisResult.compatibilityScore}
+                          className="h-4"
+                        />
+                        <span className="text-2xl font-bold text-primary">
+                          {analysisResult.compatibilityScore}%
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="flex items-center text-lg font-medium">
+                        <Lightbulb className="mr-2 h-5 w-5 text-yellow-500" />
+                        Suggested Keywords
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Consider adding these keywords from the job description.
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {analysisResult.suggestedKeywords.length > 0 ? (
+                          analysisResult.suggestedKeywords.map(
+                            (keyword, index) => (
+                              <Badge key={index} variant="outline">
+                                {keyword}
+                              </Badge>
+                            )
+                          )
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            No specific keywords suggested. Great job!
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="flex items-center text-lg font-medium">
+                        <AlertTriangle className="mr-2 h-5 w-5 text-red-500" />
+                        Missing Skills
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        These skills are in the job description but seem to be
+                        missing.
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {analysisResult.missingSkills.length > 0 ? (
+                          analysisResult.missingSkills.map((skill, index) => (
+                            <Badge key={index} variant="destructive">
+                              {skill}
+                            </Badge>
+                          ))
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            It looks like you have all the required skills!
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="optimized" className="mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <ClipboardCheck className="mr-2 h-5 w-5 text-green-500" />
+                      Optimized Resume
+                    </CardTitle>
+                    <CardDescription>
+                      We've rewritten your resume to better target this job.
+                      Review and download it below.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Textarea
+                      readOnly
+                      className="min-h-[300px] bg-muted/50 text-sm"
+                      value={analysisResult.optimizedResumeText}
                     />
-                    <span className="text-2xl font-bold text-primary">
-                      {analysisResult.compatibilityScore}%
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="flex items-center text-lg font-medium">
-                    <Lightbulb className="mr-2 h-5 w-5 text-yellow-500" />
-                    Suggested Keywords
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Consider adding these keywords from the job description.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {analysisResult.suggestedKeywords.length > 0 ? (
-                      analysisResult.suggestedKeywords.map((keyword, index) => (
-                        <Badge key={index} variant="outline">
-                          {keyword}
-                        </Badge>
-                      ))
-                    ) : (
-                      <p className="text-sm text-muted-foreground">
-                        No specific keywords suggested. Great job!
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="flex items-center text-lg font-medium">
-                    <AlertTriangle className="mr-2 h-5 w-5 text-red-500" />
-                    Missing Skills
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    These skills are in the job description but seem to be
-                    missing.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {analysisResult.missingSkills.length > 0 ? (
-                      analysisResult.missingSkills.map((skill, index) => (
-                        <Badge key={index} variant="destructive">
-                          {skill}
-                        </Badge>
-                      ))
-                    ) : (
-                      <p className="text-sm text-muted-foreground">
-                        It looks like you have all the required skills!
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <ClipboardCheck className="mr-2 h-5 w-5 text-green-500" />
-                  Optimized Resume
-                </CardTitle>
-                <CardDescription>
-                  We've rewritten your resume to better target this job. Review
-                  and download it below.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  readOnly
-                  className="min-h-[300px] bg-muted/50 text-sm"
-                  value={analysisResult.optimizedResumeText}
-                />
-                <Button onClick={downloadOptimizedResume} className="mt-4">
-                  <Download className="mr-2 h-4 w-4" /> Download Optimized
-                  Resume
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <ThumbsUp className="mr-2 h-5 w-5 text-blue-500" />
-                  Tailoring Tips
-                </CardTitle>
-                <CardDescription>
-                  Use these tips to adapt your resume for other similar jobs.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
-                  {analysisResult.tailoringTips?.map((tip, index) => (
-                    <li key={index}>{tip}</li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+                    <Button onClick={downloadOptimizedResume} className="mt-4">
+                      <Download className="mr-2 h-4 w-4" /> Download Optimized
+                      Resume
+                    </Button>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              <TabsContent value="tips" className="mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <ThumbsUp className="mr-2 h-5 w-5 text-blue-500" />
+                      Tailoring Tips
+                    </CardTitle>
+                    <CardDescription>
+                      Use these tips to adapt your resume for other similar
+                      jobs.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
+                      {analysisResult.tailoringTips?.map((tip, index) => (
+                        <li key={index}>{tip}</li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
 
             <div className="text-center">
               <Button onClick={resetForm} size="lg">
