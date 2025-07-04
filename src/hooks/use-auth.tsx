@@ -42,10 +42,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Firebase is not configured for login.');
       return;
     }
+    setLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
       console.error('Error during sign-in:', error);
+      setLoading(false);
     }
   };
 
@@ -54,10 +56,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Firebase is not configured for logout.');
       return;
     }
+    setLoading(true);
     try {
       await signOut(auth);
     } catch (error) {
       console.error('Error during sign-out:', error);
+      setLoading(false);
     }
   };
 
