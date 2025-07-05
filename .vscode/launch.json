@@ -1,11 +1,6 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
-        
         {
             "type": "chrome",
             "request": "launch",
@@ -15,35 +10,3 @@
         }
     ]
 }
-
-// Import Genkit and Google AI plugin
-import { genkit } from 'genkit';
-import { googleAI } from '@genkit-ai/googleai';
-
-// Initialize Genkit with Google AI plugin and set default model
-const ai = genkit({
-  plugins: [googleAI()],
-  model: googleAI.model('gemini-2.5-flash'), // Optional: set default model
-});
-
-// Generate text
-async function generateJoke() {
-  const llmResponse = await ai.generate('Tell me a joke.');
-  console.log(llmResponse.text);
-}
-
-// Get embeddings
-async function getEmbeddings(input: string) {
-  const embeddings = await ai.embed({
-    embedder: googleAI.embedder('text-embedding-004'),
-    content: input,
-  });
-  console.log(embeddings);
-}
-
-// Example usage
-generateJoke();
-getEmbeddings('Hello world!');
-
-// Set GEMINI_API_KEY
-process.env.GEMINI_API_KEY = 'AIzaSyDCsMsJvLCIJ3rKXUpUoNpCHgDW6r-Cl0Y';
