@@ -141,15 +141,16 @@ export function ResumeMatcherSection() {
       const result = await analyzeResume({resumeText, jobDescription});
       setAnalysisResult(result);
       setStep(3);
-    } catch (e) {
-      setError('An error occurred during analysis. Please try again.');
+    } catch (e: any) {
+      console.error('Full analysis error:', e);
+      const errorMessage =
+        e?.message || 'An unexpected error occurred. Please try again.';
+      setError(`Analysis Failed: ${errorMessage}`);
       toast({
         title: 'Analysis Failed',
-        description:
-          'An unexpected error occurred. Please check your connection and try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
-      console.error(e);
     } finally {
       setIsLoading(false);
     }
@@ -273,7 +274,7 @@ export function ResumeMatcherSection() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p>{error}</p>
+                  <p className="text-sm">{error}</p>
                   <Button onClick={resetForm} className="mt-4">
                     Start Over
                   </Button>

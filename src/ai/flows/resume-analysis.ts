@@ -64,8 +64,27 @@ const AnalyzeResumeOutputSchema = z.object({
 });
 export type AnalyzeResumeOutput = z.infer<typeof AnalyzeResumeOutputSchema>;
 
-export async function analyzeResume(input: AnalyzeResumeInput): Promise<AnalyzeResumeOutput> {
-  return analyzeResumeFlow(input);
+export async function analyzeResume(
+  input: AnalyzeResumeInput
+): Promise<AnalyzeResumeOutput> {
+  console.log('Starting resume analysis flow on the server.');
+  if (!process.env.GOOGLE_API_KEY) {
+    console.error(
+      'CRITICAL: GOOGLE_API_KEY environment variable is not set on the server.'
+    );
+    throw new Error('Server is not configured correctly. Missing API Key.');
+  }
+
+  try {
+    console.log('Calling analyzeResumeFlow...');
+    const result = await analyzeResumeFlow(input);
+    console.log('Analysis flow completed successfully.');
+    return result;
+  } catch (error) {
+    console.error('An error occurred within the analyzeResumeFlow:', error);
+    // Re-throwing the error to be caught by the client-side fetch
+    throw error;
+  }
 }
 
 const analyzeResumePrompt = ai.definePrompt({
@@ -90,7 +109,7 @@ If and only if you have confirmed the document is a resume, you must set "isResu
 
 4.  **Suggested Keywords:** List important keywords from the job description that the user should ensure are present in their resume.
 
-5.  **Tailoring Tips:** Provide a few actionable tips on how the user can adapt this newly optimized resume for other similar job applications in the future.
+5.  **Tailoring Tips:** Provide a few actionable-tips on how the user can adapt this newly optimized resume for other similar job applications in the future.
 
 Resume Text:
 {{{resumeText}}}
