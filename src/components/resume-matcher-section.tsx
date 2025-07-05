@@ -143,8 +143,10 @@ export function ResumeMatcherSection() {
       setStep(3);
     } catch (e: any) {
       console.error('Full analysis error:', e);
+      // The server is designed to throw an Error object. If we get something else, it's a network/platform issue.
       const errorMessage =
-        e?.message || 'An unexpected error occurred. Please try again.';
+        e?.message ||
+        'The connection to the server failed. This could be a timeout or a platform configuration issue. Please check your Netlify Function logs for more details.';
       setError(`Analysis Failed: ${errorMessage}`);
       toast({
         title: 'Analysis Failed',
