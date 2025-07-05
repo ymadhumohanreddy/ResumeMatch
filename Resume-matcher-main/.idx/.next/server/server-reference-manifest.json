@@ -1,0 +1,17 @@
+{
+  "node": {
+    "402e7388abc29aae318d2ef58d500611b5b414514f": {
+      "workers": {
+        "app/page": {
+          "moduleId": "[project]/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/ai/flows/resume-analysis.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "A9qOPnHSHMo+0qU/S/pKjBeM1wIyXzDIUQLpBBxbLM0="
+}
