@@ -68,11 +68,13 @@ export async function analyzeResume(
   input: AnalyzeResumeInput
 ): Promise<AnalyzeResumeOutput> {
   console.log('Starting resume analysis flow on the server.');
-  if (!process.env.GOOGLE_API_KEY) {
-    console.error(
-      'CRITICAL: GOOGLE_API_KEY environment variable is not set on the server.'
-    );
-    throw new Error('Server is not configured correctly. Missing API Key.');
+  const apiKey = process.env.GOOGLE_API_KEY;
+
+  if (!apiKey || apiKey === 'REPLACE_WITH_YOUR_GOOGLE_AI_API_KEY') {
+    const errorMessage =
+      'The GOOGLE_API_KEY is missing or is still a placeholder. Please get a valid key from Google AI Studio and add it to your .env file.';
+    console.error(`CRITICAL: ${errorMessage}`);
+    throw new Error(errorMessage);
   }
 
   try {
