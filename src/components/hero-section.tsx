@@ -15,7 +15,9 @@ export function HeroSection() {
         <Button size="lg" asChild>
           <a href="#try-it">Try Resume Matcher</a>
         </Button>
-        
+        <Button size="lg" asChild>
+          <a href="https://www.mypreppal.me/">Revert to MyPrepPal</a>
+        </Button>
       </div>
     </section>
   );
