@@ -5,7 +5,7 @@ import {AuthProvider} from '@/hooks/use-auth';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ResumeMatcher',
+  title: 'Resume Matcher',
   description: 'Optimize Your Resume. Land Your Dream Job.',
 };
 
