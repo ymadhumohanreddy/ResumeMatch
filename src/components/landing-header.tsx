@@ -17,14 +17,7 @@ import { ThemeToggle } from './theme-toggle';
 export function LandingHeader() {
   const { user, login, logout, loading, isFirebaseEnabled } = useAuth();
 
-  const navLinks = [
-    {
-      name: 'Star on GitHub',
-      href: 'https://github.com/Nithinreddy3093',
-    },
-    { name: 'Join Discord', href: 'https://discord.com/channels/@me' },
-    { name: 'Blogs', href: '#' },
-  ];
+  
 
   const renderAuthButton = () => {
     if (!isFirebaseEnabled) {
@@ -90,19 +83,7 @@ export function LandingHeader() {
           <Rocket className="mr-2 h-6 w-6" />
           <span className="font-bold">Resume Matcher</span>
         </div>
-        <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="text-foreground/60 transition-colors hover:text-foreground/80"
-              target={link.href.startsWith('http') ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-            >
-              {link.name}
-            </a>
-          ))}
-        </nav>
+        
         <div className="flex flex-1 items-center justify-end space-x-2">
           <ThemeToggle />
           <div className="hidden md:block">{renderAuthButton()}</div>
@@ -119,19 +100,7 @@ export function LandingHeader() {
                   <Rocket className="mr-2 h-6 w-6" />
                   <span className="font-bold">Resume Matcher</span>
                 </div>
-                <nav className="flex flex-col space-y-3">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="text-foreground transition-colors hover:text-foreground/80"
-                      target={link.href.startsWith('http') ? '_blank' : '_self'}
-                      rel="noopener noreferrer"
-                    >
-                      {link.name}
-                    </a>
-                  ))}
-                </nav>
+               
                 <div className="mt-6 border-t pt-6">
                   {!isFirebaseEnabled ? (
                     <Button
